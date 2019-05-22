@@ -1,0 +1,40 @@
+  CHECK POINT 1
+#include <IRremote.h>
+const int irReceiverPin = 2;
+
+IRrecv irrecv(irReceiverPin);
+decode_results results;
+
+void setup() {
+  Serial.begin(9600);
+  irrecv.enableIRIn();
+}
+
+void loop() {
+  if (irrecv.decode(&results))
+  {
+    Serial.print("irCode: ");
+    Serial.print(results.value, HEX);
+    Serial.print(", bit: ");
+    Serial.println(results.bits);
+    irrecv.resume();
+  }
+}
+
+CHECK POINT 2
+#include <IRremote.h>
+const int buttonPin = 4;
+int buttonState = 0;
+IRsend irsend;
+
+void setup() {
+  pinMode(buttonPin,INPUT);
+}
+
+void loop() {
+  buttonState = digitalRead(buttonPin);
+  if(buttonState==HIGH)
+  {
+    irsend.sendNEC(0x0000651,32);
+    }
+}
